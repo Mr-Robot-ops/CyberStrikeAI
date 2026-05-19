@@ -395,12 +395,25 @@ type MultiAgentAPIUpdate struct {
 	ToolSearchAlwaysVisibleTools *[]string `json:"tool_search_always_visible_tools,omitempty"`
 }
 
-// RobotsConfig 机器人配置（企业微信、钉钉、飞书等）
+// RobotsConfig 机器人配置（企业微信、钉钉、飞书、微信 iLink 等）
 type RobotsConfig struct {
 	Session  RobotSessionConfig  `yaml:"session,omitempty" json:"session,omitempty"`   // 机器人会话隔离策略
+	Wechat   RobotWechatConfig   `yaml:"wechat,omitempty" json:"wechat,omitempty"`     // 微信（iLink 扫码绑定）
 	Wecom    RobotWecomConfig    `yaml:"wecom,omitempty" json:"wecom,omitempty"`       // 企业微信
 	Dingtalk RobotDingtalkConfig `yaml:"dingtalk,omitempty" json:"dingtalk,omitempty"` // 钉钉
 	Lark     RobotLarkConfig     `yaml:"lark,omitempty" json:"lark,omitempty"`         // 飞书
+}
+
+// RobotWechatConfig 微信 iLink 机器人配置（个人微信 ClawBot / iLink 协议）
+type RobotWechatConfig struct {
+	Enabled        bool   `yaml:"enabled" json:"enabled"`
+	BotToken       string `yaml:"bot_token,omitempty" json:"bot_token,omitempty"`
+	ILinkBotID     string `yaml:"ilink_bot_id,omitempty" json:"ilink_bot_id,omitempty"`
+	ILinkUserID    string `yaml:"ilink_user_id,omitempty" json:"ilink_user_id,omitempty"`
+	BaseURL        string `yaml:"base_url,omitempty" json:"base_url,omitempty"`               // 默认 https://ilinkai.weixin.qq.com
+	BotType        string `yaml:"bot_type,omitempty" json:"bot_type,omitempty"`               // get_bot_qrcode 参数，默认 3
+	BotAgent       string `yaml:"bot_agent,omitempty" json:"bot_agent,omitempty"`             // base_info.bot_agent
+	GetUpdatesBuf  string `yaml:"get_updates_buf,omitempty" json:"get_updates_buf,omitempty"` // 长轮询游标（运行时）
 }
 
 // RobotSessionConfig 机器人会话隔离策略
