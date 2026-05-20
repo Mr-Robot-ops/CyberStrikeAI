@@ -2041,6 +2041,9 @@
                                 <div class="settings-nav-item" data-section="security" onclick="switchSettingsSection('security')">
                                     <span data-i18n="settings.nav.security">安全设置</span>
                                 </div>
+                                <div class="settings-nav-item" data-section="audit" onclick="switchSettingsSection('audit')">
+                                    <span data-i18n="settings.nav.audit">日志审计</span>
+                                </div>
                             </nav>
                         </aside>
                         
@@ -2570,6 +2573,88 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- 日志审计 -->
+                            <div id="settings-section-audit" class="settings-section-content">
+                                <div class="settings-section-header">
+                                    <h3 data-i18n="settingsAudit.title">日志审计</h3>
+                                    <p class="settings-description" data-i18n="settingsAudit.description">记录平台管理类操作（登录、配置、删除等），不记录对话正文、终端/WebShell 每次命令与工具调用明细。</p>
+                                    <p id="audit-retention-hint" class="settings-description audit-retention-hint" hidden></p>
+                                </div>
+                                <div id="audit-summary-stats" class="audit-summary-stats" hidden>
+                                    <div class="audit-stat-card"><span class="audit-stat-label" data-i18n="settingsAudit.statTotal">当前筛选</span><strong id="audit-stat-total">0</strong></div>
+                                    <div class="audit-stat-card"><span class="audit-stat-label" data-i18n="settingsAudit.statFailures">失败</span><strong id="audit-stat-failures">0</strong></div>
+                                    <div class="audit-stat-card"><span class="audit-stat-label" data-i18n="settingsAudit.statRecent7d">近 7 天</span><strong id="audit-stat-recent">0</strong></div>
+                                </div>
+                                <div class="audit-logs-toolbar">
+                                    <div class="audit-logs-filters">
+                                        <label class="audit-filter-cascade-group">
+                                            <span data-i18n="settingsAudit.filterEvent">事件类型</span>
+                                            <div class="audit-filter-cascade">
+                                                <select id="audit-filter-category" onchange="onAuditCategoryFilterChange()" aria-label="类别">
+                                                    <option value="" data-i18n="settingsAudit.filterAllCategories">全部类别</option>
+                                                    <option value="auth" data-i18n="settingsAudit.cat.auth">认证</option>
+                                                    <option value="config" data-i18n="settingsAudit.cat.config">配置</option>
+                                                    <option value="c2" data-i18n="settingsAudit.cat.c2">C2</option>
+                                                    <option value="webshell" data-i18n="settingsAudit.cat.webshell">WebShell</option>
+                                                    <option value="knowledge" data-i18n="settingsAudit.cat.knowledge">知识库</option>
+                                                    <option value="conversation" data-i18n="settingsAudit.cat.conversation">对话</option>
+                                                    <option value="vulnerability" data-i18n="settingsAudit.cat.vulnerability">漏洞</option>
+                                                    <option value="external_mcp" data-i18n="settingsAudit.cat.externalMcp">外部 MCP</option>
+                                                    <option value="task" data-i18n="settingsAudit.cat.task">任务</option>
+                                                    <option value="tool" data-i18n="settingsAudit.cat.tool">工具</option>
+                                                    <option value="file" data-i18n="settingsAudit.cat.file">文件</option>
+                                                    <option value="hitl" data-i18n="settingsAudit.cat.hitl">人机协同</option>
+                                                    <option value="role" data-i18n="settingsAudit.cat.role">角色</option>
+                                                    <option value="skill" data-i18n="settingsAudit.cat.skill">Skill</option>
+                                                    <option value="agent" data-i18n="settingsAudit.cat.agent">子代理</option>
+                                                </select>
+                                                <span class="audit-filter-cascade-arrow" aria-hidden="true">→</span>
+                                                <select id="audit-filter-action" disabled aria-label="操作">
+                                                    <option value="" data-i18n="settingsAudit.filterAllActions">全部操作</option>
+                                                </select>
+                                            </div>
+                                        </label>
+                                        <label>
+                                            <span data-i18n="settingsAudit.filterResult">结果</span>
+                                            <select id="audit-filter-result">
+                                                <option value="" data-i18n="settingsAudit.filterAll">全部</option>
+                                                <option value="success">success</option>
+                                                <option value="failure">failure</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span data-i18n="settingsAudit.filterSince">开始时间</span>
+                                            <input type="datetime-local" id="audit-filter-since" />
+                                        </label>
+                                        <label>
+                                            <span data-i18n="settingsAudit.filterUntil">结束时间</span>
+                                            <input type="datetime-local" id="audit-filter-until" />
+                                        </label>
+                                        <label>
+                                            <span data-i18n="settingsAudit.filterQuery">关键词</span>
+                                            <input type="text" id="audit-filter-q" data-i18n="settingsAudit.filterQueryPlaceholder" data-i18n-attr="placeholder" placeholder="消息 / 资源 ID / 操作名" />
+                                        </label>
+                                        <button type="button" class="btn-secondary" onclick="filterAuditLogs()" data-i18n="settingsAudit.filterBtn">筛选</button>
+                                        <button type="button" class="btn-secondary" onclick="resetAuditLogFilters()" data-i18n="settingsAudit.resetBtn">重置</button>
+                                    </div>
+                                    <div class="audit-logs-actions">
+                                        <button type="button" class="btn-secondary" onclick="refreshAuditLogs()" data-i18n="common.refresh">刷新</button>
+                                        <div class="audit-export-dropdown">
+                                            <button type="button" class="btn-secondary audit-export-trigger" id="audit-export-trigger" onclick="toggleAuditExportMenu(event)" aria-haspopup="true" aria-expanded="false">
+                                                <span data-i18n="settingsAudit.exportBtn">导出</span>
+                                                <span class="audit-export-caret" aria-hidden="true">▾</span>
+                                            </button>
+                                            <div id="audit-export-menu" class="audit-export-menu" role="menu" hidden>
+                                                <button type="button" class="audit-export-menu-item" role="menuitem" onclick="runAuditExport('json')" data-i18n="settingsAudit.exportJson">导出 JSON</button>
+                                                <button type="button" class="audit-export-menu-item" role="menuitem" onclick="runAuditExport('csv')" data-i18n="settingsAudit.exportCsv">导出 CSV</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="audit-log-list" class="audit-log-list c2-event-list"></div>
+                                <div id="audit-logs-pagination" class="pagination-container audit-logs-pagination"></div>
                             </div>
 
                             <!-- 安全设置 -->
@@ -3615,6 +3700,7 @@
     <script src="/static/js/chat.js"></script>
     <script src="/static/js/hitl.js"></script>
     <script src="/static/js/settings.js"></script>
+    <script src="/static/js/audit.js"></script>
     <script src="/static/js/wechat-robot.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm@4.19.0/lib/xterm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.5.0/lib/xterm-addon-fit.js"></script>

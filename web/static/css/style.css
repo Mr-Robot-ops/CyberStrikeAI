@@ -4268,6 +4268,204 @@ header {
     line-height: 1.6;
 }
 
+/* 系统设置 - 日志审计 */
+.audit-logs-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.audit-logs-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.audit-logs-filters > .btn-secondary {
+    align-self: flex-end;
+    margin-bottom: 0;
+}
+
+.audit-logs-filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+/* 事件类型：两个下拉与「结果」等控件同款边框，无外层套框 */
+.audit-filter-cascade {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.audit-filter-cascade select {
+    flex: 0 1 auto;
+    min-width: 120px;
+    max-width: 148px;
+}
+
+.audit-filter-cascade select:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: var(--bg-secondary, #f5f6f8);
+}
+
+.audit-filter-cascade-arrow {
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+}
+
+.audit-logs-filters select,
+.audit-logs-filters input[type="text"],
+.audit-logs-filters input[type="datetime-local"] {
+    min-width: 140px;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.audit-logs-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* 列表 + 底部分页合并为一张卡片，避免双边框/底部分隔线 */
+#settings-section-audit .audit-log-list.c2-event-list {
+    margin-bottom: 0;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+}
+
+#settings-section-audit .audit-logs-pagination {
+    margin-top: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+#settings-section-audit .audit-logs-pagination .monitor-pagination {
+    margin-top: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 8px 8px;
+}
+
+.audit-log-item {
+    cursor: pointer;
+}
+
+.audit-detail-pre {
+    max-height: 320px;
+    overflow: auto;
+    font-size: 0.75rem;
+    background: var(--bg-secondary);
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+.audit-summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 12px 0 16px;
+}
+
+.audit-stat-card {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--bg-secondary, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+}
+
+.audit-stat-card strong {
+    display: block;
+    font-size: 1.35rem;
+    margin-top: 4px;
+}
+
+.audit-stat-label {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.audit-retention-hint {
+    margin-top: 4px;
+    opacity: 0.85;
+}
+
+.audit-export-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.audit-export-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.audit-export-caret {
+    font-size: 0.7rem;
+    opacity: 0.75;
+}
+
+.audit-export-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    min-width: 140px;
+    padding: 4px 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 50;
+}
+
+.audit-export-menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.audit-export-menu-item:hover {
+    background: var(--bg-secondary);
+}
+
+#settings-section-audit .audit-logs-pagination .pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.audit-detail-body p {
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+}
+
 /* 系统设置 - 终端 */
 .terminal-wrapper {
     border: 1px solid var(--border-color);

@@ -87,6 +87,9 @@ function switchSettingsSection(section) {
     if (section === 'terminal' && typeof initTerminal === 'function') {
         setTimeout(initTerminal, 0);
     }
+    if (section === 'audit' && typeof initAuditLogsSection === 'function') {
+        setTimeout(initAuditLogsSection, 0);
+    }
 }
 
 // 打开设置
