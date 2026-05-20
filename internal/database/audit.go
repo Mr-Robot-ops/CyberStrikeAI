@@ -21,6 +21,7 @@ type AuditLog struct {
 	UserAgent    string                 `json:"userAgent,omitempty"`
 	ResourceType string                 `json:"resourceType,omitempty"`
 	ResourceID   string                 `json:"resourceId,omitempty"`
+	ResourceAvailable *bool             `json:"resourceAvailable,omitempty"` // API-only: whether linked resource still exists
 	Message      string                 `json:"message"`
 	Detail       map[string]interface{} `json:"detail,omitempty"`
 }
